@@ -27,6 +27,10 @@ export default function App() {
           isEnabled: voiceEnabled, toggleEnabled: toggleVoice,
           apiKey, saveApiKey } = useElevenLabs()
 
+  const beats       = scriptData
+  const currentBeat = beats[beatIndex]
+  const totalBeats  = beats.length
+
   // Document-level fallback unlock (belt-and-suspenders alongside direct button calls)
   useEffect(() => {
     const handler = () => unlockAudio()
@@ -57,10 +61,6 @@ export default function App() {
     setIsPlaying(false)
     setBeatIndex(0)
   }, [])
-
-  const beats      = scriptData
-  const currentBeat = beats[beatIndex]
-  const totalBeats  = beats.length
 
   // ── Beat processing (positions) ──────────────────────────────────────────
   useEffect(() => {
