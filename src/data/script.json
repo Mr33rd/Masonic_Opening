@@ -223,17 +223,9 @@
   {
     "beat": 28,
     "officer": "WM",
-    "cue": "WM seats the Senior and Junior Deacons.",
+    "cue": "Bro SW are you a Master Mason?",
     "action": "gavel",
     "gavel": 1,
-    "moveTo": null
-  },
-  {
-    "beat": 29,
-    "officer": "WM",
-    "cue": "Are you a Master Mason?",
-    "action": "speak",
-    "gavel": 0,
     "moveTo": null
   },
   {
