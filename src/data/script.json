@@ -224,7 +224,7 @@
     "beat": 28,
     "officer": "WM",
     "cue": "Bro SW are you a Master Mason?",
-    "action": "gavel",
+    "action": "speak",
     "gavel": 1,
     "moveTo": null
   },

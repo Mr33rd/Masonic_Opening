@@ -3,6 +3,10 @@ import scriptData from './data/script.json'
 import FloorPlan from './components/FloorPlan'
 import CuePanel from './components/CuePanel'
 import DirectorControls from './components/DirectorControls'
+import VoiceControl from './components/VoiceControl'
+import { useElevenLabs } from './hooks/useElevenLabs'
+import { getVoice } from './lib/voiceMap'
+import { expandAbbreviations } from './lib/expandAbbreviations'
 
 const OFFICERS = ['WM', 'SW', 'JW', 'SD', 'JD', 'SS', 'JS', 'SEC', 'TREAS', 'CHAP', 'TYL', 'LEC', 'MAR', 'JMC', 'SMC']
 const initialPositions = Object.fromEntries(OFFICERS.map(k => [k, k]))
@@ -16,26 +20,15 @@ export default function App() {
   const [editJson, setEditJson]           = useState('')
   const [copied, setCopied]               = useState(false)
   const timerRef = useRef(null)
+  const { speak, stop, isLoading: voiceLoading, error: voiceError,
+          isEnabled: voiceEnabled, toggleEnabled: toggleVoice,
+          apiKey, saveApiKey } = useElevenLabs()
 
   const beats      = scriptData
   const currentBeat = beats[beatIndex]
   const totalBeats  = beats.length
 
-  // ── Auto-advance (respects per-beat duration field, defaults to 4 s) ────────
-  useEffect(() => {
-    if (isPlaying && !isEditMode) {
-      const delay = beats[beatIndex]?.duration ?? 4000
-      timerRef.current = setTimeout(() => {
-        setBeatIndex(prev => {
-          if (prev >= beats.length - 1) { setIsPlaying(false); return prev }
-          return prev + 1
-        })
-      }, delay)
-    }
-    return () => clearTimeout(timerRef.current)
-  }, [isPlaying, isEditMode, beatIndex])
-
-  // ── Beat processing ───────────────────────────────────────────────────────
+  // ── Beat processing (positions) ──────────────────────────────────────────
   useEffect(() => {
     const beat = beats[beatIndex]
     if (!beat) return
@@ -56,6 +49,48 @@ export default function App() {
       setPendingReturn({ officer: beat.officer, homeStation: beat.officer })
     else setPendingReturn(null)
   }, [beatIndex, beats])
+
+  // ── Voice + auto-advance (combined so voice finishes before advancing) ────
+  useEffect(() => {
+    if (isEditMode) { stop(); return }
+
+    const beat = beats[beatIndex]
+    if (!beat) return
+
+    // Only speak when an officer is actually delivering a line
+    const isSpeechBeat = ['speak', 'respond'].includes(beat.action) && beat.officer !== 'ALL'
+
+    let cancelled = false
+
+    async function run() {
+      if (isSpeechBeat) {
+        const { voiceId } = getVoice(beat.officer)
+        await speak(expandAbbreviations(beat.cue), voiceId)   // resolves when audio ends or is stopped
+      }
+
+      if (!isPlaying || cancelled) return
+
+      // For speech beats, just a short breath pause after audio ends.
+      // For non-speech beats (gavel, move, etc.) use the beat's own duration.
+      const gap = isSpeechBeat ? 700 : (beat.duration ?? 4000)
+      await new Promise(r => { timerRef.current = setTimeout(r, gap) })
+
+      if (!cancelled) {
+        setBeatIndex(prev => {
+          if (prev >= beats.length - 1) { setIsPlaying(false); return prev }
+          return prev + 1
+        })
+      }
+    }
+
+    run()
+
+    return () => {
+      cancelled = true
+      clearTimeout(timerRef.current)
+      stop()
+    }
+  }, [beatIndex, isEditMode, isPlaying, speak, stop])
 
   // ── Edit mode position callback ───────────────────────────────────────────
   const handlePositionsChange = useCallback((positions) => {
@@ -99,6 +134,16 @@ export default function App() {
         </div>
 
         <div className="flex items-center gap-3">
+          {/* Voiceover control */}
+          <VoiceControl
+            isEnabled={voiceEnabled}
+            isLoading={voiceLoading}
+            error={voiceError}
+            apiKey={apiKey}
+            onToggle={toggleVoice}
+            onSaveApiKey={saveApiKey}
+          />
+
           {/* Edit layout toggle */}
           <button
             onClick={() => { setIsEditMode(m => !m); setIsPlaying(false) }}
