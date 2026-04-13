@@ -119,7 +119,7 @@
   {
     "beat": 15,
     "officer": "WM",
-    "cue": "The pass is [PASS WORD].",
+    "cue": "The pass is CORRECT.",
     "action": "speak",
     "gavel": 0,
     "moveTo": null
@@ -178,7 +178,8 @@
     "cue": "JD communicates the Master's orders to the Tyler, then shuts the door. Tyler locks it from the outside.",
     "action": "move",
     "gavel": 0,
-    "moveTo": "JD"
+    "moveTo": "JD",
+    "soundEffect": "door_lock"
   },
   {
     "beat": 23,

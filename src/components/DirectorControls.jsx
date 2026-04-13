@@ -19,6 +19,15 @@ const OFFICER_NAMES = {
   ALL:   'All Officers',
 }
 
+function IconRestart() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+      <polyline points="2,6 2,2 6,2" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M2 2 A7 7 0 1 1 1.5 9" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" fill="none" />
+    </svg>
+  )
+}
+
 // SVG icons for controls
 function IconBack() {
   return (
@@ -63,6 +72,7 @@ export default function DirectorControls({
   onPrev,
   onNext,
   onPlayPause,
+  onRestart,
 }) {
   const officerCode = currentBeat?.officer ?? '—'
   const officerName = OFFICER_NAMES[officerCode] ?? officerCode
@@ -108,6 +118,23 @@ export default function DirectorControls({
 
         {/* Playback controls */}
         <div className="flex items-center gap-2">
+          {/* Restart */}
+          <motion.button
+            whileHover={{ scale: 1.08 }}
+            whileTap={{ scale: 0.94 }}
+            onClick={onRestart}
+            disabled={beatIndex === 0}
+            title="Start over"
+            className="flex items-center justify-center rounded-full w-9 h-9 border transition-colors disabled:opacity-30"
+            style={{
+              borderColor: 'rgba(42,63,107,0.8)',
+              color: '#6a85b0',
+              background: 'rgba(11,20,38,0.5)',
+            }}
+          >
+            <IconRestart />
+          </motion.button>
+
           {/* Back */}
           <motion.button
             whileHover={{ scale: 1.08 }}

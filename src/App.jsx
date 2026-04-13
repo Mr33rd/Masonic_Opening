@@ -7,6 +7,8 @@ import VoiceControl from './components/VoiceControl'
 import { useElevenLabs } from './hooks/useElevenLabs'
 import { getVoice } from './lib/voiceMap'
 import { expandAbbreviations } from './lib/expandAbbreviations'
+import { playGavel } from './lib/gavelSound'
+import { playSoundEffect } from './lib/soundEffects'
 
 const OFFICERS = ['WM', 'SW', 'JW', 'SD', 'JD', 'SS', 'JS', 'SEC', 'TREAS', 'CHAP', 'TYL', 'LEC', 'MAR', 'JMC', 'SMC']
 const initialPositions = Object.fromEntries(OFFICERS.map(k => [k, k]))
@@ -63,6 +65,18 @@ export default function App() {
     let cancelled = false
 
     async function run() {
+      // Gavel strikes come first (before any speech on the same beat)
+      if (beat.gavel > 0) {
+        await playGavel(beat.gavel, () => cancelled)
+      }
+
+      // Beat-specific sound effects
+      if (beat.soundEffect) {
+        await playSoundEffect(beat.soundEffect, () => cancelled)
+      }
+
+      if (cancelled) return
+
       if (isSpeechBeat) {
         const { voiceId } = getVoice(beat.officer)
         await speak(expandAbbreviations(beat.cue), voiceId)   // resolves when audio ends or is stopped
@@ -70,9 +84,10 @@ export default function App() {
 
       if (!isPlaying || cancelled) return
 
-      // For speech beats, just a short breath pause after audio ends.
-      // For non-speech beats (gavel, move, etc.) use the beat's own duration.
-      const gap = isSpeechBeat ? 700 : (beat.duration ?? 4000)
+      // After audio/gavel, short pause before auto-advance.
+      // Pure non-audio beats (move, salute…) use the beat's own duration.
+      const hasAudio = isSpeechBeat || beat.gavel > 0 || !!beat.soundEffect
+      const gap = hasAudio ? 700 : (beat.duration ?? 4000)
       await new Promise(r => { timerRef.current = setTimeout(r, gap) })
 
       if (!cancelled) {
@@ -229,6 +244,7 @@ export default function App() {
             onPrev={() => setBeatIndex(p => Math.max(0, p - 1))}
             onNext={() => setBeatIndex(p => Math.min(beats.length - 1, p + 1))}
             onPlayPause={() => setIsPlaying(p => !p)}
+            onRestart={() => { setIsPlaying(false); setBeatIndex(0) }}
           />
         </>
       )}
