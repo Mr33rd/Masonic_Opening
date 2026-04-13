@@ -9,6 +9,7 @@ import { getVoice } from './lib/voiceMap'
 import { expandAbbreviations } from './lib/expandAbbreviations'
 import { playGavel } from './lib/gavelSound'
 import { playSoundEffect } from './lib/soundEffects'
+import { unlockAudio } from './lib/audioContext'
 
 const OFFICERS = ['WM', 'SW', 'JW', 'SD', 'JD', 'SS', 'JS', 'SEC', 'TREAS', 'CHAP', 'TYL', 'LEC', 'MAR', 'JMC', 'SMC']
 const initialPositions = Object.fromEntries(OFFICERS.map(k => [k, k]))
@@ -25,6 +26,17 @@ export default function App() {
   const { speak, stop, isLoading: voiceLoading, error: voiceError,
           isEnabled: voiceEnabled, toggleEnabled: toggleVoice,
           apiKey, saveApiKey } = useElevenLabs()
+
+  // Unlock Web Audio on first interaction so mobile plays audio from setTimeout too
+  useEffect(() => {
+    const handler = () => unlockAudio()
+    document.addEventListener('touchstart', handler, { once: true })
+    document.addEventListener('mousedown',  handler, { once: true })
+    return () => {
+      document.removeEventListener('touchstart', handler)
+      document.removeEventListener('mousedown',  handler)
+    }
+  }, [])
 
   const beats      = scriptData
   const currentBeat = beats[beatIndex]

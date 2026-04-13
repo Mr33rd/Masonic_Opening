@@ -1,7 +1,8 @@
 import { useRef, useState, useCallback, useEffect } from 'react'
+import { getAudioCtx } from '../lib/audioContext'
 
-// In-memory cache: `${voiceId}:${text}` → blob URL
-const audioCache = new Map()
+// Cache decoded AudioBuffers — only needs to be fetched once per text+voice
+const audioBufferCache = new Map()
 
 export function useElevenLabs() {
   const [isLoading, setIsLoading]   = useState(false)
@@ -10,8 +11,8 @@ export function useElevenLabs() {
   const [apiKey, setApiKeyState]    = useState(
     () => localStorage.getItem('elevenLabsApiKey') || import.meta.env.VITE_ELEVENLABS_API_KEY || ''
   )
-  const currentAudioRef             = useRef(null)
-  const speakEndRef                 = useRef(null) // resolve fn for current speak Promise
+  const currentSourceRef = useRef(null) // AudioBufferSourceNode
+  const speakEndRef      = useRef(null) // resolve fn for current speak Promise
 
   const saveApiKey = useCallback((key) => {
     setApiKeyState(key)
@@ -27,17 +28,19 @@ export function useElevenLabs() {
     })
   }, [])
 
-  // stop() resolves any pending speak Promise so callers unblock immediately
   const stop = useCallback(() => {
-    if (currentAudioRef.current) {
-      currentAudioRef.current.pause()
-      currentAudioRef.current = null
+    if (currentSourceRef.current) {
+      try { currentSourceRef.current.stop() } catch (_) {}
+      currentSourceRef.current = null
     }
     speakEndRef.current?.()
     speakEndRef.current = null
   }, [])
 
-  // speak() returns a Promise that resolves when audio finishes (or is stopped/errors)
+  // Returns a Promise that resolves when the audio finishes playing (or is stopped).
+  // Uses Web Audio API (AudioBufferSourceNode) so that after the AudioContext is
+  // unlocked once by a user gesture, all subsequent calls — including those fired
+  // from setTimeout — work on iOS/Android.
   const speak = useCallback(async (text, voiceId) => {
     if (!isEnabled || !apiKey || !text) return
 
@@ -49,9 +52,9 @@ export function useElevenLabs() {
     try {
       setIsLoading(true)
 
-      let audioUrl = audioCache.get(cacheKey)
+      let audioBuffer = audioBufferCache.get(cacheKey)
 
-      if (!audioUrl) {
+      if (!audioBuffer) {
         const response = await fetch(
           `https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`,
           {
@@ -73,26 +76,40 @@ export function useElevenLabs() {
           throw new Error(response.status === 401 ? 'Invalid API key' : `ElevenLabs error ${response.status}`)
         }
 
-        const blob = await response.blob()
-        audioUrl = URL.createObjectURL(blob)
-        audioCache.set(cacheKey, audioUrl)
+        const arrayBuf = await response.arrayBuffer()
+        const ctx = getAudioCtx()
+        audioBuffer = await ctx.decodeAudioData(arrayBuf)
+        audioBufferCache.set(cacheKey, audioBuffer)
       }
 
       setIsLoading(false)
 
-      const audio = new Audio(audioUrl)
-      currentAudioRef.current = audio
+      const ctx = getAudioCtx()
 
-      // Wait until audio ends, is stopped externally, or errors
+      // Try to resume if suspended (will succeed if we're in or near a user-gesture chain)
+      if (ctx.state === 'suspended') await ctx.resume()
+
+      // If the context is still not running (user hasn't tapped yet on mobile),
+      // fall back to an estimated timer so the ceremony doesn't rush ahead silently.
+      if (ctx.state !== 'running') {
+        const words = text.trim().split(/\s+/).length
+        await new Promise(r => setTimeout(r, Math.max(2500, Math.round((words / 2.2) * 1000))))
+        return
+      }
+
+      const source = ctx.createBufferSource()
+      source.buffer = audioBuffer
+      source.connect(ctx.destination)
+      currentSourceRef.current = source
+
       await new Promise((resolve) => {
         speakEndRef.current = resolve
-        audio.onended = () => {
+        source.onended = () => {
           speakEndRef.current = null
-          if (currentAudioRef.current === audio) currentAudioRef.current = null
+          if (currentSourceRef.current === source) currentSourceRef.current = null
           resolve()
         }
-        audio.onerror = () => { speakEndRef.current = null; resolve() }
-        audio.play().catch(() => { speakEndRef.current = null; resolve() })
+        source.start(0)
       })
     } catch (err) {
       setError(err.message)
