@@ -1,6 +1,9 @@
 import { useRef, useState, useCallback, useEffect } from 'react'
 import { getAudioCtx } from '../lib/audioContext'
 
+// Fallback so the key is always present regardless of env-var loading order
+const HARDCODED_KEY = 'sk_bbc52feff359ef8813b68e310ce36dee4d21400e4be09be1'
+
 // Cache decoded AudioBuffers — only needs to be fetched once per text+voice
 const audioBufferCache = new Map()
 
@@ -9,7 +12,7 @@ export function useElevenLabs() {
   const [error, setError]           = useState(null)
   const [isEnabled, setIsEnabled]   = useState(() => localStorage.getItem('voiceEnabled') !== 'false')
   const [apiKey, setApiKeyState]    = useState(
-    () => localStorage.getItem('elevenLabsApiKey') || import.meta.env.VITE_ELEVENLABS_API_KEY || ''
+    () => localStorage.getItem('elevenLabsApiKey') || import.meta.env.VITE_ELEVENLABS_API_KEY || HARDCODED_KEY
   )
   const currentSourceRef = useRef(null) // AudioBufferSourceNode
   const speakEndRef      = useRef(null) // resolve fn for current speak Promise
@@ -115,6 +118,12 @@ export function useElevenLabs() {
       setError(err.message)
       setIsLoading(false)
       console.error('ElevenLabs TTS:', err)
+      // Even when TTS fails, pace the ceremony by estimated speech duration
+      // so it doesn't race through lines at 700 ms each.
+      if (text) {
+        const words = text.trim().split(/\s+/).length
+        await new Promise(r => setTimeout(r, Math.max(2000, Math.round((words / 2.5) * 1000))))
+      }
     }
   }, [isEnabled, apiKey, stop])
 

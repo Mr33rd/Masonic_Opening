@@ -27,7 +27,7 @@ export default function App() {
           isEnabled: voiceEnabled, toggleEnabled: toggleVoice,
           apiKey, saveApiKey } = useElevenLabs()
 
-  // Unlock Web Audio on first interaction so mobile plays audio from setTimeout too
+  // Document-level fallback unlock (belt-and-suspenders alongside direct button calls)
   useEffect(() => {
     const handler = () => unlockAudio()
     document.addEventListener('touchstart', handler, { once: true })
@@ -36,6 +36,26 @@ export default function App() {
       document.removeEventListener('touchstart', handler)
       document.removeEventListener('mousedown',  handler)
     }
+  }, [])
+
+  // Button handlers — call unlockAudio() SYNCHRONOUSLY before state updates
+  // so Android Chrome links the AudioContext resume to the user gesture chain.
+  const handlePlayPause = useCallback(() => {
+    unlockAudio()
+    setIsPlaying(p => !p)
+  }, [])
+  const handleNext = useCallback(() => {
+    unlockAudio()
+    setBeatIndex(p => Math.min(beats.length - 1, p + 1))
+  }, [beats.length])
+  const handlePrev = useCallback(() => {
+    unlockAudio()
+    setBeatIndex(p => Math.max(0, p - 1))
+  }, [])
+  const handleRestart = useCallback(() => {
+    unlockAudio()
+    setIsPlaying(false)
+    setBeatIndex(0)
   }, [])
 
   const beats      = scriptData
@@ -77,27 +97,35 @@ export default function App() {
     let cancelled = false
 
     async function run() {
-      // Gavel strikes come first (before any speech on the same beat)
-      if (beat.gavel > 0) {
-        await playGavel(beat.gavel, () => cancelled)
-      }
+      // Only play audio when the ceremony is actively running.
+      // Guarding here prevents AudioContext creation on mount (before any user gesture)
+      // which would leave it suspended and break mobile audio unlock.
+      if (isPlaying) {
+        // Gavel strikes come first
+        if (beat.gavel > 0) {
+          await playGavel(beat.gavel, () => cancelled)
+        }
 
-      // Beat-specific sound effects
-      if (beat.soundEffect) {
-        await playSoundEffect(beat.soundEffect, () => cancelled)
-      }
+        // Beat-specific sound effects
+        if (beat.soundEffect) {
+          await playSoundEffect(beat.soundEffect, () => cancelled)
+        }
 
-      if (cancelled) return
+        if (cancelled) return
 
-      if (isSpeechBeat) {
-        const { voiceId } = getVoice(beat.officer)
-        await speak(expandAbbreviations(beat.cue), voiceId)   // resolves when audio ends or is stopped
+        // TTS — only for officer speech/response lines
+        if (isSpeechBeat) {
+          const { voiceId } = getVoice(beat.officer)
+          await speak(expandAbbreviations(beat.cue), voiceId)
+        }
+
+        if (cancelled) return
       }
 
       if (!isPlaying || cancelled) return
 
-      // After audio/gavel, short pause before auto-advance.
-      // Pure non-audio beats (move, salute…) use the beat's own duration.
+      // Pause before auto-advancing.
+      // Audio beats get a short breath gap; silent beats use their own duration.
       const hasAudio = isSpeechBeat || beat.gavel > 0 || !!beat.soundEffect
       const gap = hasAudio ? 700 : (beat.duration ?? 4000)
       await new Promise(r => { timerRef.current = setTimeout(r, gap) })
@@ -253,10 +281,10 @@ export default function App() {
             totalBeats={totalBeats}
             currentBeat={currentBeat}
             isPlaying={isPlaying}
-            onPrev={() => setBeatIndex(p => Math.max(0, p - 1))}
-            onNext={() => setBeatIndex(p => Math.min(beats.length - 1, p + 1))}
-            onPlayPause={() => setIsPlaying(p => !p)}
-            onRestart={() => { setIsPlaying(false); setBeatIndex(0) }}
+            onPrev={handlePrev}
+            onNext={handleNext}
+            onPlayPause={handlePlayPause}
+            onRestart={handleRestart}
           />
         </>
       )}
