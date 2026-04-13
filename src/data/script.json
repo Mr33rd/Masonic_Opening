@@ -1,0 +1,648 @@
+[
+  {
+    "beat": 1,
+    "officer": "WM",
+    "cue": "WM repairs to his station and calls the Lodge to order.",
+    "action": "gavel",
+    "gavel": 1,
+    "moveTo": null,
+    "resetPositions": { "SD": "SD", "JD": "JD" }
+  },
+  {
+    "beat": 2,
+    "officer": "ALL",
+    "cue": "Brethren clothe themselves and take their seats. Officers put on jewels. Wardens dispose columns: down in West, erect in South. Deacons take their rods. Secretary lays books, papers, and Three Great Lights on table.",
+    "action": "respond",
+    "gavel": 0,
+    "moveTo": null,
+    "resetPositions": { "SD": "SD", "JD": "JD" }
+  },
+  {
+    "beat": 3,
+    "officer": "WM",
+    "cue": "Brother Senior Warden, proceed to satisfy yourself that all present are Master Masons.",
+    "action": "speak",
+    "gavel": 0,
+    "moveTo": null,
+    "resetPositions": { "SD": "SD", "JD": "JD" }
+  },
+  {
+    "beat": 4,
+    "officer": "SW",
+    "cue": "Brother Senior Deacon and Junior Deacon, receive the pass in a whisper from each brother present, except the Worshipful Master, Senior Warden, and Junior Warden.",
+    "action": "speak",
+    "gavel": 0,
+    "moveTo": null,
+    "resetPositions": { "SD": "SD", "JD": "JD" }
+  },
+  {
+    "beat": 5,
+    "officer": "SD",
+    "secondaryOfficer": "JD",
+    "secondaryMoveTo": "SW",
+    "cue": "SD and JD both approach the Senior Warden to receive the pass from him.",
+    "action": "move",
+    "gavel": 0,
+    "moveTo": "SW",
+    "duration": 2000
+  },
+  {
+    "beat": 6,
+    "officer": "SD",
+    "cue": "SD takes the pass on the North side — first brother.",
+    "action": "move",
+    "gavel": 0,
+    "moveTo": "LEC",
+    "duration": 2000
+  },
+  {
+    "beat": 7,
+    "officer": "SD",
+    "cue": "SD continues taking the pass — North side.",
+    "action": "move",
+    "gavel": 0,
+    "moveTo": "JS",
+    "duration": 2000
+  },
+  {
+    "beat": 8,
+    "officer": "SD",
+    "cue": "SD completes the North side.",
+    "action": "move",
+    "gavel": 0,
+    "moveTo": "JMC",
+    "duration": 2000
+  },
+  {
+    "beat": 9,
+    "officer": "JD",
+    "cue": "JD takes the pass on the South side — first brother.",
+    "action": "move",
+    "gavel": 0,
+    "moveTo": "SS",
+    "duration": 2000
+  },
+  {
+    "beat": 10,
+    "officer": "JD",
+    "cue": "JD continues taking the pass — South side.",
+    "action": "move",
+    "gavel": 0,
+    "moveTo": "SMC",
+    "duration": 2000
+  },
+  {
+    "beat": 11,
+    "officer": "JD",
+    "cue": "JD completes the South side.",
+    "action": "move",
+    "gavel": 0,
+    "moveTo": "MAR",
+    "duration": 2000
+  },
+  {
+    "beat": 12,
+    "officer": "JD",
+    "cue": "JD communicates the pass to the Senior Deacon.",
+    "action": "move",
+    "gavel": 0,
+    "moveTo": "SD"
+  },
+  {
+    "beat": 13,
+    "officer": "SD",
+    "cue": "SD communicates the pass to the Worshipful Master.",
+    "action": "move",
+    "gavel": 0,
+    "moveTo": "WM"
+  },
+  {
+    "beat": 15,
+    "officer": "WM",
+    "cue": "The pass is [PASS WORD].",
+    "action": "speak",
+    "gavel": 0,
+    "moveTo": null
+  },
+  {
+    "beat": 16,
+    "officer": "SW",
+    "cue": "All present are Master Masons, Worshipful Master.",
+    "action": "respond",
+    "gavel": 0,
+    "moveTo": null
+  },
+  {
+    "beat": 17,
+    "officer": "WM",
+    "cue": "WM calls up the Senior Deacon and Junior Deacon.",
+    "action": "gavel",
+    "gavel": 1,
+    "moveTo": null
+  },
+  {
+    "beat": 18,
+    "officer": "WM",
+    "cue": "Brother Junior Deacon, what is the first great care of Masons when in Lodge assembled?",
+    "action": "speak",
+    "gavel": 0,
+    "moveTo": null
+  },
+  {
+    "beat": 19,
+    "officer": "JD",
+    "cue": "To see that the Lodge is duly tyled, Worshipful Master.",
+    "action": "respond",
+    "gavel": 0,
+    "moveTo": null
+  },
+  {
+    "beat": 20,
+    "officer": "WM",
+    "cue": "Perform that duty. Inform the Tyler that I am about to open a Lodge of Master Masons, and direct him to tyle accordingly.",
+    "action": "speak",
+    "gavel": 0,
+    "moveTo": null
+  },
+  {
+    "beat": 21,
+    "officer": "JD",
+    "cue": "JD opens the door without knocking and satisfies himself the Tyler is at his post.",
+    "action": "move",
+    "gavel": 0,
+    "moveTo": "TYL"
+  },
+  {
+    "beat": 22,
+    "officer": "JD",
+    "cue": "JD communicates the Master's orders to the Tyler, then shuts the door. Tyler locks it from the outside.",
+    "action": "move",
+    "gavel": 0,
+    "moveTo": "JD"
+  },
+  {
+    "beat": 23,
+    "officer": "JD",
+    "cue": "The Lodge is duly tyled, Worshipful Master.",
+    "action": "respond",
+    "gavel": 0,
+    "moveTo": null
+  },
+  {
+    "beat": 24,
+    "officer": "WM",
+    "cue": "How are we tyled, Brother Junior Deacon?",
+    "action": "speak",
+    "gavel": 0,
+    "moveTo": null
+  },
+  {
+    "beat": 25,
+    "officer": "JD",
+    "cue": "By a brother Master Mason without the door, armed with the proper instrument of his office.",
+    "action": "respond",
+    "gavel": 0,
+    "moveTo": null
+  },
+  {
+    "beat": 26,
+    "officer": "WM",
+    "cue": "What are his duties there?",
+    "action": "speak",
+    "gavel": 0,
+    "moveTo": null
+  },
+  {
+    "beat": 27,
+    "officer": "JD",
+    "cue": "To keep off all cowans and eaves-droppers, and to see that none pass or repass but such as are duly qualified and have permission from the Worshipful Master.",
+    "action": "respond",
+    "gavel": 0,
+    "moveTo": null
+  },
+  {
+    "beat": 28,
+    "officer": "WM",
+    "cue": "WM seats the Senior and Junior Deacons.",
+    "action": "gavel",
+    "gavel": 1,
+    "moveTo": null
+  },
+  {
+    "beat": 29,
+    "officer": "WM",
+    "cue": "Are you a Master Mason?",
+    "action": "speak",
+    "gavel": 0,
+    "moveTo": null
+  },
+  {
+    "beat": 30,
+    "officer": "SW",
+    "cue": "I am.",
+    "action": "respond",
+    "gavel": 0,
+    "moveTo": null
+  },
+  {
+    "beat": 31,
+    "officer": "WM",
+    "cue": "What induced you to become a Master Mason?",
+    "action": "speak",
+    "gavel": 0,
+    "moveTo": null
+  },
+  {
+    "beat": 32,
+    "officer": "SW",
+    "cue": "In order that I might receive Masters' wages, and be thereby better enabled to support myself and family, and contribute to the relief of poor, distressed Master Masons, their widows and orphans.",
+    "action": "respond",
+    "gavel": 0,
+    "moveTo": null
+  },
+  {
+    "beat": 33,
+    "officer": "WM",
+    "cue": "Where were you made a Master Mason?",
+    "action": "speak",
+    "gavel": 0,
+    "moveTo": null
+  },
+  {
+    "beat": 34,
+    "officer": "SW",
+    "cue": "In a just and lawfully constituted Lodge of Master Masons.",
+    "action": "respond",
+    "gavel": 0,
+    "moveTo": null
+  },
+  {
+    "beat": 35,
+    "officer": "WM",
+    "cue": "How many anciently composed a Lodge of Master Masons?",
+    "action": "speak",
+    "gavel": 0,
+    "moveTo": null
+  },
+  {
+    "beat": 36,
+    "officer": "SW",
+    "cue": "Three or more.",
+    "action": "respond",
+    "gavel": 0,
+    "moveTo": null
+  },
+  {
+    "beat": 37,
+    "officer": "WM",
+    "cue": "When composed of only three, who were they?",
+    "action": "speak",
+    "gavel": 0,
+    "moveTo": null
+  },
+  {
+    "beat": 38,
+    "officer": "SW",
+    "cue": "The Worshipful Master, Senior Warden and Junior Warden.",
+    "action": "respond",
+    "gavel": 0,
+    "moveTo": null
+  },
+  {
+    "beat": 39,
+    "officer": "WM",
+    "cue": "What is the Junior Warden's station in the Lodge?",
+    "action": "speak",
+    "gavel": 0,
+    "moveTo": null
+  },
+  {
+    "beat": 40,
+    "officer": "SW",
+    "cue": "In the South.",
+    "action": "respond",
+    "gavel": 0,
+    "moveTo": null
+  },
+  {
+    "beat": 41,
+    "officer": "WM",
+    "cue": "Why are you in the South, Brother Junior Warden? What are your duties there?",
+    "action": "speak",
+    "gavel": 0,
+    "moveTo": null
+  },
+  {
+    "beat": 42,
+    "officer": "JW",
+    "cue": "As the Sun in the South at its meridian height is the glory and beauty of the day, so stands the Junior Warden in the South, the better to observe the time; to call the craft from labor to refreshment; to superintend them during the hours thereof, and see that they do not convert the purposes of refreshment into intemperance and excess, to call them on again in due season, that the Worshipful Master may have pleasure and the craft profit thereby.",
+    "action": "respond",
+    "gavel": 0,
+    "moveTo": null,
+    "duration": 8000
+  },
+  {
+    "beat": 43,
+    "officer": "WM",
+    "cue": "What is the Senior Warden's station in the Lodge?",
+    "action": "speak",
+    "gavel": 0,
+    "moveTo": null
+  },
+  {
+    "beat": 44,
+    "officer": "JW",
+    "cue": "In the West.",
+    "action": "respond",
+    "gavel": 0,
+    "moveTo": null
+  },
+  {
+    "beat": 45,
+    "officer": "WM",
+    "cue": "Why are you in the West, Brother Senior Warden? What are your duties there?",
+    "action": "speak",
+    "gavel": 0,
+    "moveTo": null
+  },
+  {
+    "beat": 46,
+    "officer": "SW",
+    "cue": "As the Sun is in the West at the close of the day, so is the Senior Warden in the West to assist the Worshipful Master in opening and closing his Lodge; to pay the craft their wages, if any be due, and see that none go away dissatisfied, harmony being the strength and support of all societies, more especially of ours.",
+    "action": "respond",
+    "gavel": 0,
+    "moveTo": null,
+    "duration": 8000
+  },
+  {
+    "beat": 47,
+    "officer": "WM",
+    "cue": "What is the Worshipful Master's station in the Lodge?",
+    "action": "speak",
+    "gavel": 0,
+    "moveTo": null
+  },
+  {
+    "beat": 48,
+    "officer": "SW",
+    "cue": "In the East.",
+    "action": "respond",
+    "gavel": 0,
+    "moveTo": null
+  },
+  {
+    "beat": 49,
+    "officer": "WM",
+    "cue": "Why is he in the East, Brother Senior Warden? What are his duties there?",
+    "action": "speak",
+    "gavel": 0,
+    "moveTo": null
+  },
+  {
+    "beat": 50,
+    "officer": "SW",
+    "cue": "As the Sun rises in the East to open and govern the day, so rises the Worshipful Master in the East to open and govern his Lodge; to set the craft to work, and give them good and wholesome instruction for their labors.",
+    "action": "respond",
+    "gavel": 0,
+    "moveTo": null,
+    "duration": 8000
+  },
+  {
+    "beat": 51,
+    "officer": "WM",
+    "cue": "WM gives three raps, calling up the Lodge. WM rises last.",
+    "action": "gavel",
+    "gavel": 3,
+    "moveTo": null
+  },
+  {
+    "beat": 52,
+    "officer": "ALL",
+    "cue": "All brethren rise.",
+    "action": "respond",
+    "gavel": 0,
+    "moveTo": null
+  },
+  {
+    "beat": 53,
+    "officer": "WM",
+    "cue": "Brother Senior Warden, it is my will and pleasure that [LODGE NAME] Lodge number [NUMBER] be now opened on the third degree of Masonry, for the dispatch of such business as may regularly come before it, under the usual Masonic restrictions. Communicate this order to the Junior Warden in the South and he to the craft for their government.",
+    "action": "speak",
+    "gavel": 0,
+    "moveTo": null,
+    "duration": 7000
+  },
+  {
+    "beat": 54,
+    "officer": "SW",
+    "cue": "Brother Junior Warden, it is the will and pleasure of the Worshipful Master in the East that [LODGE NAME] Lodge number [NUMBER] be now opened on the third degree of Masonry, for the dispatch of such business as may regularly come before it, under the usual Masonic restrictions. Communicate this order to the craft for their government.",
+    "action": "speak",
+    "gavel": 0,
+    "moveTo": null,
+    "duration": 7000
+  },
+  {
+    "beat": 55,
+    "officer": "JW",
+    "cue": "Brethren, it is the will and pleasure of the Worshipful Master in the East, communicated to me by the Senior Warden in the West, that [LODGE NAME] Lodge number [NUMBER] be now opened on the third degree of Masonry, for the dispatch of such business as may regularly come before it, under the usual Masonic restrictions. Take notice, and govern yourselves accordingly. Look to the East.",
+    "action": "speak",
+    "gavel": 0,
+    "moveTo": null,
+    "duration": 8000
+  },
+  {
+    "beat": 56,
+    "officer": "WM",
+    "cue": "Brethren, together, and the Signs.",
+    "action": "speak",
+    "gavel": 0,
+    "moveTo": null
+  },
+  {
+    "beat": 57,
+    "officer": "ALL",
+    "cue": "All brethren face East. WM makes the signs of EA, FC, and MM slowly and distinctly. Craft imitates simultaneously.",
+    "action": "salute",
+    "gavel": 0,
+    "moveTo": null,
+    "duration": 6000
+  },
+  {
+    "beat": 58,
+    "officer": "JW",
+    "cue": "JW gives one rap.",
+    "action": "gavel",
+    "gavel": 1,
+    "moveTo": null
+  },
+  {
+    "beat": 59,
+    "officer": "SW",
+    "cue": "SW gives one rap.",
+    "action": "gavel",
+    "gavel": 1,
+    "moveTo": null
+  },
+  {
+    "beat": 60,
+    "officer": "WM",
+    "cue": "WM gives one rap. Raps passed thrice about the stations.",
+    "action": "gavel",
+    "gavel": 1,
+    "moveTo": null
+  },
+  {
+    "beat": 61,
+    "officer": "WM",
+    "cue": "WM removes hat. Let us pray.",
+    "action": "speak",
+    "gavel": 0,
+    "moveTo": null
+  },
+  {
+    "beat": 62,
+    "officer": "CHAP",
+    "cue": "Chaplain (or WM) offers the prayer.",
+    "action": "speak",
+    "gavel": 0,
+    "moveTo": null,
+    "duration": 5000
+  },
+  {
+    "beat": 63,
+    "officer": "WM",
+    "cue": "In the name of God and the Holy Saints John, I declare [LODGE NAME] Lodge Number [NUMBER] opened in form on the third degree. Brother Junior Deacon, inform the Tyler.",
+    "action": "speak",
+    "gavel": 0,
+    "moveTo": null,
+    "duration": 6000
+  },
+  {
+    "beat": 64,
+    "officer": "WM",
+    "cue": "WM seats the craft.",
+    "action": "gavel",
+    "gavel": 1,
+    "moveTo": null
+  },
+  {
+    "beat": 65,
+    "officer": "ALL",
+    "cue": "All brethren are seated.",
+    "action": "respond",
+    "gavel": 0,
+    "moveTo": null
+  },
+  {
+    "beat": 66,
+    "officer": "JD",
+    "cue": "JD goes to the door and knocks thrice.",
+    "action": "move",
+    "gavel": 3,
+    "moveTo": "TYL"
+  },
+  {
+    "beat": 67,
+    "officer": "JD",
+    "cue": "JD announces to the Tyler that the Lodge is opened on the third degree. Shuts the door. Tyler locks it from outside.",
+    "action": "speak",
+    "gavel": 0,
+    "moveTo": null
+  },
+  {
+    "beat": 68,
+    "officer": "JD",
+    "cue": "JD returns to his station.",
+    "action": "move",
+    "gavel": 0,
+    "moveTo": "JD"
+  },
+  {
+    "beat": 69,
+    "officer": "JD",
+    "cue": "The duty is performed, Worshipful Master.",
+    "action": "respond",
+    "gavel": 0,
+    "moveTo": null
+  },
+  {
+    "beat": 70,
+    "officer": "WM",
+    "cue": "WM seats the Junior Deacon.",
+    "action": "gavel",
+    "gavel": 1,
+    "moveTo": null
+  },
+  {
+    "beat": 71,
+    "officer": "SD",
+    "cue": "SD takes the Three Great Lights from the Secretary's table and arranges them on the altar. Bible open at Ecclesiastes XII. Both points of compasses above the square.",
+    "action": "move",
+    "gavel": 0,
+    "moveTo": "ALTAR"
+  },
+  {
+    "beat": 72,
+    "officer": "SD",
+    "cue": "Lesser Lights placed: two at NE and NW corners of altar, third between them slightly northward. SD returns to station.",
+    "action": "move",
+    "gavel": 0,
+    "moveTo": "SD"
+  },
+  {
+    "beat": 73,
+    "officer": "SW",
+    "cue": "Wardens reverse columns: erect in West, down in South.",
+    "action": "respond",
+    "gavel": 0,
+    "moveTo": null
+  },
+  {
+    "beat": 74,
+    "officer": "WM",
+    "cue": "WM requests the Secretary to read the minutes of the last regular communication.",
+    "action": "speak",
+    "gavel": 0,
+    "moveTo": null
+  },
+  {
+    "beat": 75,
+    "officer": "WM",
+    "cue": "Brother Senior Warden, have you any alterations to propose?",
+    "action": "speak",
+    "gavel": 0,
+    "moveTo": null
+  },
+  {
+    "beat": 76,
+    "officer": "SW",
+    "cue": "SW makes the sign of a Master Mason. I have none, Worshipful Master.",
+    "action": "salute",
+    "gavel": 0,
+    "moveTo": null
+  },
+  {
+    "beat": 77,
+    "officer": "WM",
+    "cue": "Have you any, Brother Junior Warden?",
+    "action": "speak",
+    "gavel": 0,
+    "moveTo": null
+  },
+  {
+    "beat": 78,
+    "officer": "JW",
+    "cue": "JW makes the sign of a Master Mason. None, Worshipful Master.",
+    "action": "salute",
+    "gavel": 0,
+    "moveTo": null
+  },
+  {
+    "beat": 79,
+    "officer": "WM",
+    "cue": "Has any brother around the Lodge any alterations to propose?",
+    "action": "speak",
+    "gavel": 0,
+    "moveTo": null
+  }
+]

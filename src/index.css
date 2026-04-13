@@ -1,0 +1,87 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --navy-950: #030913;
+  --navy-900: #070f1f;
+  --navy-800: #0b1426;
+  --navy-700: #111d35;
+  --navy-600: #1a2c4e;
+  --navy-500: #2a3f6b;
+  --gold-100: #fdf6e3;
+  --gold-200: #f5e8c7;
+  --gold-300: #ecd49a;
+  --gold-400: #e0bc68;
+  --gold-500: #c9a84c;
+  --gold-600: #a07c2e;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+body {
+  background-color: var(--navy-950);
+  color: var(--gold-200);
+  font-family: 'Crimson Pro', Georgia, serif;
+}
+
+/* Subtle tessellated background pattern */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 38px,
+      rgba(201, 168, 76, 0.025) 38px,
+      rgba(201, 168, 76, 0.025) 39px
+    ),
+    repeating-linear-gradient(
+      -45deg,
+      transparent,
+      transparent 38px,
+      rgba(201, 168, 76, 0.025) 38px,
+      rgba(201, 168, 76, 0.025) 39px
+    );
+  pointer-events: none;
+  z-index: 0;
+}
+
+#root {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-track {
+  background: var(--navy-800);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--gold-600);
+  border-radius: 2px;
+}
+
+/* Cinzel helper */
+.font-cinzel {
+  font-family: 'Cinzel', Georgia, serif;
+}
+
+.font-crimson {
+  font-family: 'Crimson Pro', Georgia, serif;
+}
